@@ -12,15 +12,11 @@ public class ClientSender {
 
                 if (bufferedReader.ready()) {
                     System.out.println("ClientSender starts to writing in channel");
-                    Thread.sleep(1000);
                     String text = bufferedReader.readLine();
-
                     outputStream.writeUTF(text);
                     outputStream.flush();
-                    System.out.println("Your message " + text +"  has been sent");
-                    Thread.sleep(1000);
-
-                }
+                    System.out.println("Your message " + "<<" + text + ">>" + "  has been sent");
+                    }
             }
         } catch (IOException e) {
             e.printStackTrace();
