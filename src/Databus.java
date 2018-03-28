@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
-public class Server {
+public class Databus {
 
     public static void main(String args[]) throws InterruptedException {
         try {
@@ -18,14 +18,14 @@ public class Server {
             while (!client.isClosed()) {
                 System.out.println("System is ready for getting data");
                 String entry = in.readUTF();
-                System.out.println("Read message from Client: \n" + entry);
+                System.out.println("Read message from ClientSender: \n" + entry);
                 Thread.sleep(3000);
                 // инициализация проверки условия продолжения работы с клиентом по этому сокету по кодовому слову
                 //       - quit
 
                 if(entry.equalsIgnoreCase("quit")) {
                     System.out.println("Ending of work");
-                    out.writeUTF("Server reply" + entry);
+                    out.writeUTF("Databus reply" + entry);
                     out.flush();
                     Thread.sleep(3000);
                     break;

@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.Socket;
 
 
-public class Client {
+public class ClientSender {
     public static void main(String args[]) throws InterruptedException {
         try {
             Socket socket = new Socket("127.0.0.1", 4242);
@@ -11,7 +11,7 @@ public class Client {
             while (!socket.isOutputShutdown()) {
 
                 if (bufferedReader.ready()) {
-                    System.out.println("Client starts to writing in channel");
+                    System.out.println("ClientSender starts to writing in channel");
                     Thread.sleep(1000);
                     String text = bufferedReader.readLine();
 
