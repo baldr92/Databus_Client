@@ -1,37 +1,38 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class Databus {
 
-    public static void main(String args[]) throws InterruptedException {
+    public static void main(String args[]) {
+        ExecutorService es = Executors.newFixedThreadPool(2);
+        Socket client;
         try {
             ServerSocket serverSocket = new ServerSocket(4242);
-            Socket client = serverSocket.accept();
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            //Socket client = serverSocket.accept();
             System.out.println("Connection was accepted");
+
+            /*
             DataOutputStream out = new DataOutputStream(client.getOutputStream());
             DataInputStream in = new DataInputStream(client.getInputStream());
             System.out.println("DataInputStream created");
-            while (!client.isClosed()) {
-                System.out.println("System is ready for getting data");
-                String entry = in.readUTF();
-                System.out.println("Read message from ClientSender: \n" + entry);
-
-                if(entry.equalsIgnoreCase("quit")) {
-                    System.out.println("Ending of work");
-                    out.writeUTF("Databus reply" + entry);
-                    out.flush();
-                    break;
+            System.out.println("DataOutputStream created");
+            */
+            while (!serverSocket.isClosed()) {
+                if (br.ready()) {
+                    String serverText = br.readLine();
+                        if (serverText.equalsIgnoreCase("quit")) {
+                        serverSocket.close();
+                        break;
+                        }
+                        client = serverSocket.accept();
+                        es.execute(new CreationFactory(client));
                 }
-                //out.writeUTF(entry);
-                //out.flush();
             }
-            out.close();
-            in.close();
-            client.close();
+            es.shutdown();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Something went wrong");
