@@ -15,16 +15,14 @@ public class ClientGetter {
             while(!socket.isInputShutdown()){
                 if(bufferedReader.ready()) {
                     System.out.println("System is ready to get data");
-                    String text = inputStream.readUTF();
-                    System.out.println(text);
-
+                    String text1 = inputStream.readUTF();
+                    System.out.println(text1);
                 }
             }
         } catch (IOException io) {
             io.printStackTrace();
             System.out.println(io.getMessage());
         }
-
     }
     public void createFile(){
 
