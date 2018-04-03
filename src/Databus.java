@@ -11,26 +11,24 @@ public class Databus {
         ExecutorService es = Executors.newFixedThreadPool(2);
         try {
             ServerSocket serverSocket = new ServerSocket(4242);
-            Socket client = serverSocket.accept();
+
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             System.out.println("Connection was accepted");
-            DataOutputStream outputStream = new DataOutputStream(client.getOutputStream());
-            DataInputStream inputStream = new DataInputStream(client.getInputStream());
+
             System.out.println("DataInputStream created");
-            while (!client.isClosed()) {
+            while (!serverSocket.isClosed()) {
                 if(bufferedReader.ready()){
                     String serverText = bufferedReader.readLine();
                     if (serverText.equalsIgnoreCase("quit")){
                         System.out.println("Server is prepare to exit");
                         break;
                     }
-                    es.execute(new CreationFactory(client));
                 }
-
+                Socket client = serverSocket.accept(); //посмотреть почему эти две
+                es.execute(new CreationFactory(client));//строчки не выполняются в теле иф-контроллера
             }
-            outputStream.close();
-            inputStream.close();
-            client.close();
+            es.shutdown();
+
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Something went wrong");
