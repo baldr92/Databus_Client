@@ -8,7 +8,7 @@ public class ClientSender {
             Socket socket = new Socket("127.0.0.1", 4242);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
-            //DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+            DataInputStream inputStream = new DataInputStream(socket.getInputStream());
             while (!socket.isOutputShutdown()) {
 
         //впилил получение инфы 02.04.2018
@@ -18,6 +18,9 @@ public class ClientSender {
                     outputStream.writeUTF(text);
                     outputStream.flush();
                     System.out.println("Your message " + "<<" + text + ">>" + "  has been sent");
+                    socket.close();
+                    System.out.println("Socket is closed");
+                    break;
                     //System.out.println("Гет реди фо геттин сообщение с сервера");
                     //String getTextFromServer = inputStream.readUTF();
                     //System.out.println(getTextFromServer);
