@@ -12,7 +12,7 @@ public class Databus {
         try {
 
             ServerSocket serverSocket = new ServerSocket(4242);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+            //BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             System.out.println("Connection was accepted");
 
             while (!serverSocket.isClosed()) {
