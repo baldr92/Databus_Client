@@ -14,7 +14,7 @@ public class ClientGetter {
             Socket client = getterSocket.accept();
             //BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             DataInputStream inputStream = new DataInputStream(client.getInputStream());
-            while(!client.isClosed()){
+            if(!client.isClosed()){
                     System.out.println("System is ready to get data");
                     String text1 = inputStream.readUTF();
                     System.out.println(text1);

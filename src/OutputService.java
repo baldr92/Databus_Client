@@ -4,17 +4,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.net.Socket;
 
-public class SendingFactory implements Runnable {
-    Socket sendSocket;
-    public SendingFactory(Socket socket){
+public class OutputService implements Runnable {
+    static Socket sendSocket;
+    public OutputService(Socket socket){
         sendSocket = socket;
     }
     @Override
-
     public void run() {
         try {
-            sendSocket = new Socket("127.0.0.1", 4343);  //ДЛЯ ВЫВОДА В ДРУГОЙ КЛИЕНТ
-            if (!sendSocket.isOutputShutdown()) { //сделать условие на подключение нового клинта
+            //sendSocket = new Socket("127.0.0.1", 4343);  //ДЛЯ ВЫВОДА В ДРУГОЙ КЛИЕНТ
+            if (!sendSocket.isOutputShutdown()) { //сделать условие на подключение нового клиента
                 System.out.println("Конечный клиент подключился");
 
                 File fileMsg = new File("Titles.txt");

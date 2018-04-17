@@ -3,12 +3,11 @@ import java.net.Socket;
 
 
 public class ClientSender {
-    public static void main(String args[]) throws InterruptedException {
+    public static void main(String args[]) {
         try {
             Socket socket = new Socket("127.0.0.1", 4242);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
-            DataInputStream inputStream = new DataInputStream(socket.getInputStream());
             while (!socket.isOutputShutdown()) {
 
         //впилил получение инфы 02.04.2018
