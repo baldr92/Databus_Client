@@ -25,6 +25,7 @@ public class InputService implements Runnable {
 
                 clientDialogue.close();
                 inputStream.close();
+
             }
 
 

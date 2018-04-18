@@ -12,13 +12,17 @@ public class Databus {
             try {
                 ServerSocket serverSocket = new ServerSocket(4242);
                 System.out.println("Connection was accepted");
-                if (!serverSocket.isClosed()) {
-                    Socket client = serverSocket.accept(); //посмотреть почему эти две
-                    es.execute(new InputService(client));//строчки не выполняются в теле иф-контроллера
+
+                while (!serverSocket.isClosed()) {
+                    Socket getFromClient = serverSocket.accept(); //посмотреть почему эти две
+                    //DataInputStream streamSwitcher = new DataInputStream(getFromClient.getInputStream());
+                    //String chooser = streamSwitcher.readUTF();
+                    es.execute(new InputService(getFromClient));//строчки не выполняются в теле иф-контроллера
+                    Socket sendToClient = serverSocket.accept();
+                    es.execute(new OutputService(sendToClient));
+
                 }
                 //serverSocket.close();
-                Socket sockToClient = new Socket("127.0.0.1", 4343);
-                es.execute(new OutputService(sockToClient));
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Something went wrong");
