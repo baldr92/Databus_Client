@@ -19,8 +19,7 @@ public class Databus {
                     //String chooser = streamSwitcher.readUTF();
                     es.execute(new InputService(getFromClient));//строчки не выполняются в теле иф-контроллера
                     Socket sendToClient = serverSocket.accept();
-                    es.execute(new OutputService(sendToClient));
-
+                    es.execute(new OutputService(sendToClient));//отсутствие гибкости программы, вследствии последовательного выполнения получения-отправки сообщения в очередь
                 }
                 //serverSocket.close();
             } catch (IOException e) {

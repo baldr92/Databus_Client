@@ -21,19 +21,15 @@ public class InputService implements Runnable {
                 FileReader fileForCheck = new FileReader("Titles.txt");
                 BufferedReader bufferedReader = new BufferedReader(fileForCheck);
                 if (!(bufferedReader.readLine() == null)) {
-                    System.out.println("\n" + message);
-                    FileWriter fileWriter = new FileWriter("Titles.txt");
+                    System.out.println(message);
+                    File file = new File("Titles.txt");
+                    FileWriter fileWriter = new FileWriter(file, true);
                     fileWriter.write(message + "\n");
                     fileWriter.close();
                 }
                 inputStream.close();
                 //clientDialogue.close();
-
-
             }
-
-
-
         } catch (IOException io) {
             io.printStackTrace();
             System.out.println(io.getMessage());
