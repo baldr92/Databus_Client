@@ -13,18 +13,22 @@ public class InputService implements Runnable {
             DataInputStream inputStream = new DataInputStream(clientDialogue.getInputStream());
             System.out.println("DataOutputStream is created");
             System.out.println("DataInputStream is created");
-            if (!clientDialogue.isClosed()) {
+            while (!clientDialogue.isClosed()) {
                 //reading block
                 System.out.println("Start reading");
                 String message = inputStream.readUTF();
-                System.out.println("\n" + message);
 
-                FileWriter fileWriter = new FileWriter("Titles.txt");
-                fileWriter.write(message);
-                fileWriter.close();
-
-                clientDialogue.close();
+                FileReader fileForCheck = new FileReader("Titles.txt");
+                BufferedReader bufferedReader = new BufferedReader(fileForCheck);
+                if (!(bufferedReader.readLine() == null)) {
+                    System.out.println("\n" + message);
+                    FileWriter fileWriter = new FileWriter("Titles.txt");
+                    fileWriter.write(message + "\n");
+                    fileWriter.close();
+                }
                 inputStream.close();
+                //clientDialogue.close();
+
 
             }
 

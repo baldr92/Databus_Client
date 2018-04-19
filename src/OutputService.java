@@ -25,8 +25,10 @@ public class OutputService implements Runnable {
                 while ((line = br.readLine()) != null) {
                     outputStream.writeUTF(line);
                     System.out.println("Ваше сообщение " + line + " отправлено");
+
                 }
                 br.close();
+                sendSocket.close();
             }
             //sendSocket.close();
         }catch (Exception ex) {

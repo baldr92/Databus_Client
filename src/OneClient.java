@@ -11,7 +11,6 @@ public class OneClient {
             System.out.println("Choose mode for the next work");
             System.out.println("Input one of commands");
             System.out.println("\"send\" or \"get\"");
-            //char charSwitcherClientLogic = (char) System.in.read();
             Scanner scanner = new Scanner(System.in);
             String switcherClientLogic = scanner.nextLine();
 
@@ -27,11 +26,6 @@ public class OneClient {
                         System.out.println("Choose option you would like to use");
                         break;
                 }
-
-        //} catch (IOException io) {
-            //io.printStackTrace();
-        //}
-
     }
 
 
