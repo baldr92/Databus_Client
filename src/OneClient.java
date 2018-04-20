@@ -1,3 +1,5 @@
+import javafx.scene.SubScene;
+
 import javax.xml.stream.events.Characters;
 import java.io.*;
 import java.net.ServerSocket;
@@ -9,13 +11,24 @@ public class OneClient {
         //try {
             OneClient oneClient = new OneClient();
             System.out.println("Choose mode for the next work");
-            System.out.println("Input one of commands");
-            System.out.println("\"send\" or \"get\"");
+            System.out.println("Enter one of commands");
+            System.out.println("\"-send\" or \"-get\" and your message");
             Scanner scanner = new Scanner(System.in);
-            String switcherClientLogic = scanner.nextLine();
+            String switcherClientLogic = scanner.next();
 
-                switch (switcherClientLogic) {
-                    case "send":
+            if (switcherClientLogic.contains("-get")) {
+                System.out.println("Your last message is:");
+                oneClient.getMessageFromServer();
+            } else if (switcherClientLogic.contains("-send")) {
+                System.out.println("A message is prepared to send");
+                oneClient.sendMessageToServer();
+            } else {
+                System.out.println("Input one of following commands \"-get\" or \"send\" ");
+            }
+
+
+                /*switch (switcherClientLogic) {
+                    case switcherClientLogic.contains("-send"):
                         System.out.println("Input your message");
                         oneClient.sendMessageToServer();
                         break;
@@ -25,7 +38,7 @@ public class OneClient {
                     default:
                         System.out.println("Choose option you would like to use");
                         break;
-                }
+                }  */
     }
 
 

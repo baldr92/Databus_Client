@@ -13,15 +13,19 @@ public class Databus {
                 ServerSocket serverSocket = new ServerSocket(4242);
                 System.out.println("Connection was accepted");
 
+                // Create new socket
+                // command = read from socket
+                // if command == 'send' {
+                //      create new socket
+                //      input = read from socket
+                // } else if
+
                 while (!serverSocket.isClosed()) {
                     Socket getFromClient = serverSocket.accept(); //посмотреть почему эти две
-                    //DataInputStream streamSwitcher = new DataInputStream(getFromClient.getInputStream());
-                    //String chooser = streamSwitcher.readUTF();
                     es.execute(new InputService(getFromClient));//строчки не выполняются в теле иф-контроллера
                     Socket sendToClient = serverSocket.accept();
                     es.execute(new OutputService(sendToClient));//отсутствие гибкости программы, вследствии последовательного выполнения получения-отправки сообщения в очередь
                 }
-                //serverSocket.close();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Something went wrong");
