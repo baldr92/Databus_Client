@@ -7,14 +7,17 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class OneClient {
+
+    static Scanner scanner = new Scanner(System.in);
+    static String switcherClientLogic = scanner.next();
+
     public static void main (String args[]) {
         //try {
             OneClient oneClient = new OneClient();
             System.out.println("Choose mode for the next work");
             System.out.println("Enter one of commands");
             System.out.println("\"-send\" or \"-get\" and your message");
-            Scanner scanner = new Scanner(System.in);
-            String switcherClientLogic = scanner.next();
+
 
             if (switcherClientLogic.contains("-get")) {
                 System.out.println("Your last message is:");

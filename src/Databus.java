@@ -21,9 +21,15 @@ public class Databus {
                 // } else if
 
                 while (!serverSocket.isClosed()) {
+
                     Socket getFromClient = serverSocket.accept(); //посмотреть почему эти две
+                    String s; // проверка и отсечение
+                    DataInputStream inputForParsing = new DataInputStream(getFromClient.getInputStream());
+                    String parserText = inputForParsing.readUTF();
+                    inputForParsing.close();
+                    if
                     es.execute(new InputService(getFromClient));//строчки не выполняются в теле иф-контроллера
-                    Socket sendToClient = serverSocket.accept();
+                    //Socket sendToClient = serverSocket.accept();
                     es.execute(new OutputService(sendToClient));//отсутствие гибкости программы, вследствии последовательного выполнения получения-отправки сообщения в очередь
                 }
             } catch (IOException e) {
