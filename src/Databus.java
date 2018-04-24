@@ -12,7 +12,6 @@ public class Databus {
             try {
                 ServerSocket serverSocket = new ServerSocket(4242);
                 System.out.println("Connection was accepted");
-
                 // Create new socket
                 // command = read from socket
                 // if command == 'send' {
@@ -23,20 +22,47 @@ public class Databus {
                 while (!serverSocket.isClosed()) {
 
                     Socket getFromClient = serverSocket.accept();
-                    DataInputStream inputForParsing = new DataInputStream(getFromClient.getInputStream());
-                    String parserText = inputForParsing.readUTF();
-                    inputForParsing.close();
-                        if (parserText.contains("-send")){
-                            Socket socketForSending = serverSocket.accept();
-                                try { //утащить в другой класс
-                                    DataInputStream inputStream = new DataInputStream(clientDialogue.getInputStream());
-                                    System.out.println("DataOutputStream is created");
+                    String readCommandFromServer;
+                    DataInputStream getterCommand = new DataInputStream(getFromClient.getInputStream());
+                    readCommandFromServer = getterCommand.readUTF();
+                    if (readCommandFromServer.contains("-send ")) {
+
+                        System.out.println("Поток создан");
+                        //String parserText = inputForParsing.readUTF();
+                        //inputForParsing.close();
+                        // if (parserText.contains("-send")){
+                        //   Socket socketForSending = serverSocket.accept();
+                        es.execute(new InputService(getFromClient));
+                    } else if (readCommandFromServer.contains("-get ")){
+                        System.out.println("Поток на отправке создан");
+                        //es.execute(new OutputService());
+
+                    }
+
+
+                    // } else if(parserText.contains("-get")){
+                    //Socket sendToClient = serverSocket.accept();
+                    //es.execute(new OutputService(sendToClient));//отсутствие гибкости программы, вследствии последовательного выполнения получения-отправки сообщения в очередь
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Something went wrong");
+            }
+        //es.shutdown();
+    }
+}
+
+
+
+
+/* try { //утащить в другой класс
+                                    DataInputStream inputStream = new DataInputStream(socketForSending.getInputStream());
                                     System.out.println("DataInputStream is created");
-                                    while (!clientDialogue.isClosed()) {
+                                    while (!socketForSending.isClosed()) {
                                         //reading block
                                         System.out.println("Start reading");
-                                        String message = inputStream.readUTF();
-
+                                        String[] message = inputStream.readUTF().split("-send ");
                                         FileReader fileForCheck = new FileReader("Titles.txt");
                                         BufferedReader bufferedReader = new BufferedReader(fileForCheck);
                                         if (!(bufferedReader.readLine() == null)) {
@@ -52,16 +78,4 @@ public class Databus {
                                 } catch (IOException io) {
                                     io.printStackTrace();
                                     System.out.println(io.getMessage());
-                                }
-                        } else if(parserText.contains("-get")){
-                            //Socket sendToClient = serverSocket.accept();
-                            es.execute(new OutputService(sendToClient));//отсутствие гибкости программы, вследствии последовательного выполнения получения-отправки сообщения в очередь
-                        }
-                    }
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Something went wrong");
-            }
-        es.shutdown();
-    }
-}
+                                } */

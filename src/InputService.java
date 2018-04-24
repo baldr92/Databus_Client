@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class InputService implements Runnable {
     static Socket clientDialogue;
@@ -9,9 +11,9 @@ public class InputService implements Runnable {
 
     @Override
     public void run() {
+        ExecutorService esForGetting = Executors.newCachedThreadPool();
         try {
             DataInputStream inputStream = new DataInputStream(clientDialogue.getInputStream());
-            System.out.println("DataOutputStream is created");
             System.out.println("DataInputStream is created");
             while (!clientDialogue.isClosed()) {
                 //reading block
@@ -21,11 +23,16 @@ public class InputService implements Runnable {
                 FileReader fileForCheck = new FileReader("Titles.txt");
                 BufferedReader bufferedReader = new BufferedReader(fileForCheck);
                 if (!(bufferedReader.readLine() == null)) {
-                    System.out.println(message);
-                    File file = new File("Titles.txt");
-                    FileWriter fileWriter = new FileWriter(file, true);
-                    fileWriter.write(message + "\n");
-                    fileWriter.close();
+                    if (message.contains("-send")) {
+                        String newMessage = message.replaceAll("[-send ]","");
+                        System.out.println(newMessage);
+                        File file = new File("Titles.txt");
+                        FileWriter fileWriter = new FileWriter(file, true);
+                        fileWriter.write(newMessage + "\n");
+                        fileWriter.close();
+                    } else if (message.contains("-get")) {
+                        esForGetting.execute(new OutputService(clientDialogue));
+                    }
                 }
                 inputStream.close();
                 //clientDialogue.close();
