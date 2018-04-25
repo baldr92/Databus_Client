@@ -22,20 +22,36 @@ public class Databus {
                 while (!serverSocket.isClosed()) {
 
                     Socket getFromClient = serverSocket.accept();
-                    String readCommandFromServer;
-                    DataInputStream getterCommand = new DataInputStream(getFromClient.getInputStream());
-                    readCommandFromServer = getterCommand.readUTF();
-                    if (readCommandFromServer.contains("-send ")) {
 
+                    DataInputStream getterCommand = new DataInputStream(getFromClient.getInputStream());
+                    String readCommandFromServer  = getterCommand.readUTF();
+                    //System.out.println(readCommandFromServer);
+                    //DataOutputStream outToService = new DataOutputStream(getFromClient.getOutputStream());
+                    //outToService.writeUTF(readCommandFromServer);
+                    getFromClient.close();
+                    if (readCommandFromServer.contains("-send ")) {
                         System.out.println("Поток создан");
+                        FileReader fileForCheck = new FileReader("Titles.txt");
+                        BufferedReader bufferedReader = new BufferedReader(fileForCheck);
+                        if (!(bufferedReader.readLine() == null)) {
+                            //String newMessage = message.replaceAll("[-send ]","");
+                            System.out.println(readCommandFromServer);
+                            File file = new File("Titles.txt");
+                            FileWriter fileWriter = new FileWriter(file, true);
+                            fileWriter.write(readCommandFromServer + "\n");
+                            fileWriter.close();
+
+                        }
+                        //Socket determineSocket = serverSocket.accept();
                         //String parserText = inputForParsing.readUTF();
                         //inputForParsing.close();
                         // if (parserText.contains("-send")){
                         //   Socket socketForSending = serverSocket.accept();
-                        es.execute(new InputService(getFromClient));
-                    } else if (readCommandFromServer.contains("-get ")){
-                        System.out.println("Поток на отправке создан");
-                        //es.execute(new OutputService());
+
+                        //es.execute(new InputService(getFromClient));
+                    } else if (readCommandFromServer.contains("-get")){
+                        System.out.println("Поток на отправку создан");
+                        es.execute(new OutputService(getFromClient));
 
                     }
 

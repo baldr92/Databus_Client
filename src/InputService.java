@@ -23,16 +23,13 @@ public class InputService implements Runnable {
                 FileReader fileForCheck = new FileReader("Titles.txt");
                 BufferedReader bufferedReader = new BufferedReader(fileForCheck);
                 if (!(bufferedReader.readLine() == null)) {
-                    if (message.contains("-send")) {
-                        String newMessage = message.replaceAll("[-send ]","");
-                        System.out.println(newMessage);
+                        //String newMessage = message.replaceAll("[-send ]","");
+                        System.out.println(message);
                         File file = new File("Titles.txt");
                         FileWriter fileWriter = new FileWriter(file, true);
-                        fileWriter.write(newMessage + "\n");
+                        fileWriter.write(message + "\n");
                         fileWriter.close();
-                    } else if (message.contains("-get")) {
-                        esForGetting.execute(new OutputService(clientDialogue));
-                    }
+
                 }
                 inputStream.close();
                 //clientDialogue.close();
