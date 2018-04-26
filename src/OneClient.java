@@ -5,7 +5,10 @@ import javax.xml.stream.events.Characters;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import org.apache.commons.io.FileUtils;
 
 public class OneClient {
 
@@ -100,11 +103,37 @@ public class OneClient {
         File fileMsg = new File("Titles.txt");
         FileReader fileReader = new FileReader(fileMsg);
 
-        BufferedReader br = new BufferedReader(fileReader);
-        String line = br.readLine();
-        System.out.println(line);
+        //BufferedReader br = new BufferedReader(fileReader);
+        //String line = br.readLine();
 
 
 
+
+
+        String lastLine = readLastLine(fileMsg);
+        System.out.println(lastLine);
+
+        //на удаление последней строки
+        List<String> lines = FileUtils.readLines(fileMsg);
+        List<String> updatedLines = lines.stream().filter(s -> !s.contains(lastLine)).collect(Collectors.toList());
+        FileUtils.writeLines(fileMsg,updatedLines);
+
+        }
+
+        private static String readLastLine(File file) throws FileNotFoundException, IOException {
+        String result = null;
+        try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+            long startIdx = file.length();
+            while (startIdx >= 0 && (result == null || result.length() == 0)) {
+                raf.seek(startIdx);
+                if (startIdx > 0)
+                    raf.readLine();
+                result = raf.readLine();
+                startIdx--;
+            }
+        }
+
+
+        return result;
     }
 }
