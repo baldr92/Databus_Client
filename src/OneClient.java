@@ -20,11 +20,11 @@ public class OneClient {
              String textFromPanel = bf.readLine();
              bf.close();
              if (textFromPanel.contains("-get")) {
-                 ServerSocket serverSocket = new ServerSocket(4444);
-                 Socket getFromDataBus = serverSocket.accept();
-                 DataInputStream getFromMQ = new DataInputStream(getFromDataBus.getInputStream());
-                 String stringMQ = getFromMQ.readUTF();
-                 System.out.println(stringMQ);
+                 //ServerSocket serverSocket = new ServerSocket(4444);
+                 //Socket getFromDataBus = serverSocket.accept();
+                 //DataInputStream getFromMQ = new DataInputStream(getFromDataBus.getInputStream());
+                 //String stringMQ = getFromMQ.readUTF();
+                 //System.out.println(stringMQ);
                  /*
                     System.out.println("The system is prepared to get message");
                     //oneClient.getMessageFromQuery();
@@ -63,9 +63,18 @@ public class OneClient {
         }
     }
 
-    public void getMessageFromServer() {
+    public void getMessageFromServer(String string, Socket socket) {
         try {
-            Socket socketFromServer = new Socket("127.0.0.1", 4242);
+            ServerSocket serverClient = new ServerSocket(4444);
+            Socket socketFromServer = serverClient.accept();
+
+            //отправка гет сообщения и сделать реализация на стороне сервера обрабока гет сообщения
+            DataOutputStream getOutputStream = new DataOutputStream(socket.getOutputStream());
+            getOutputStream.writeUTF(string);
+            getOutputStream.flush();
+            System.out.println("get message has been sent");
+
+
             DataInputStream inputStream = new DataInputStream(socketFromServer.getInputStream());
             if (!socketFromServer.isOutputShutdown()) {
                 System.out.println("System is ready to get data from Server");
