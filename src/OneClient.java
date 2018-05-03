@@ -16,24 +16,14 @@ public class OneClient {
 
          BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
          try {
-             Socket socket = new Socket("127.0.0.1", 4242);
+
              String textFromPanel = bf.readLine();
              bf.close();
              if (textFromPanel.contains("-get")) {
-                 //ServerSocket serverSocket = new ServerSocket(4444);
-                 //Socket getFromDataBus = serverSocket.accept();
-                 //DataInputStream getFromMQ = new DataInputStream(getFromDataBus.getInputStream());
-                 //String stringMQ = getFromMQ.readUTF();
-                 //System.out.println(stringMQ);
-                 /*
-                    System.out.println("The system is prepared to get message");
-                    //oneClient.getMessageFromQuery();
-                    oneClient.sendMessageToServer(textFromPanel, socket);
-                    System.out.println("1");
-                    DataInputStream inputStream = new DataInputStream(socket.getInputStream());
-                    inputStream.readUTF();
-                    */
+                 Socket socket = new Socket("127.0.0.1", 4242);
+                 oneClient.getMessageFromServer(textFromPanel, socket);
                 } else if (textFromPanel.contains("-send ")) {
+                    Socket socket = new Socket("127.0.0.1", 4242);
                     System.out.println("A message is prepared to send");
                     oneClient.sendMessageToServer(textFromPanel, socket);
                 } else {
@@ -65,15 +55,15 @@ public class OneClient {
 
     public void getMessageFromServer(String string, Socket socket) {
         try {
-            ServerSocket serverClient = new ServerSocket(4444);
-            Socket socketFromServer = serverClient.accept();
-
             //отправка гет сообщения и сделать реализация на стороне сервера обрабока гет сообщения
             DataOutputStream getOutputStream = new DataOutputStream(socket.getOutputStream());
             getOutputStream.writeUTF(string);
             getOutputStream.flush();
             System.out.println("get message has been sent");
 
+            ServerSocket serverClient = new ServerSocket(4444);
+            Socket socketFromServer = serverClient.accept();
+            Thread.sleep(500);
 
             DataInputStream inputStream = new DataInputStream(socketFromServer.getInputStream());
             if (!socketFromServer.isOutputShutdown()) {
@@ -84,6 +74,9 @@ public class OneClient {
             }
         } catch (IOException io){
             io.printStackTrace();
+        }
+        catch (InterruptedException ie) {
+            ie.printStackTrace();
         }
     }
 
