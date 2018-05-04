@@ -3,75 +3,50 @@ import org.apache.commons.io.FileUtils;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 
 public class Databus {
     public static void main(String args[]) {
-
-        ExecutorService es = Executors.newFixedThreadPool(6);
         Databus databus = new Databus();
             try {
                 ServerSocket serverSocket = new ServerSocket(4242);
                 System.out.println("Connection was accepted");
-                // Create new socket
-                // command = read from socket
-                // if command == 'send' {
-                //      create new socket
-                //      input = read from socket
-                // } else if
 
                 while (!serverSocket.isClosed()) {
-
                     Socket getFromClient = serverSocket.accept();
-
                     DataInputStream getterCommand = new DataInputStream(getFromClient.getInputStream());
                     String readCommandFromServer  = getterCommand.readUTF();
-                    //System.out.println(readCommandFromServer);
-                    //DataOutputStream outToService = new DataOutputStream(getFromClient.getOutputStream());
-                    //outToService.writeUTF(readCommandFromServer);
                     getFromClient.close();
                     if (readCommandFromServer.contains("-send ")) {
                         System.out.println("Поток создан");
-                        FileReader fileForCheck = new FileReader("Titles.txt");
-                        BufferedReader bufferedReader = new BufferedReader(fileForCheck);
-                        if (!(bufferedReader.readLine() == null)) {
-                            //String newMessage = message.replaceAll("[-send ]","");
-                            System.out.println(readCommandFromServer);
-                            File file = new File("Titles.txt");
-                            FileWriter fileWriter = new FileWriter(file, true);
-                            fileWriter.write(readCommandFromServer + "\n");
-                            fileWriter.close();
 
+                       String path_string = "C:\\Users\\PLatchenkov\\IdeaProjects\\Databus_Client\\Titles.txt";
+                        Path path = Paths.get(path_string);
+                        if (!Files.exists(path)) {
+                            File f = new File(path_string);
+                            f.createNewFile();
                         }
-                        //Socket determineSocket = serverSocket.accept();
-                        //String parserText = inputForParsing.readUTF();
-                        //inputForParsing.close();
-                        // if (parserText.contains("-send")){
-                        //   Socket socketForSending = serverSocket.accept();
 
-                        //es.execute(new InputService(getFromClient));
+                        System.out.println(readCommandFromServer);
+                        File file = new File("Titles.txt");
+                        FileWriter fileWriter = new FileWriter(file, true);
+                        fileWriter.write(readCommandFromServer + "\n");
+                        fileWriter.close();
+
                     } else if (readCommandFromServer.contains("-get")){
-                        //send message to client and remove last readed string
+                        //send message to client and remove last read string
                         databus.sendMessageToClient();
-
-
                     }
-
-
-                    // } else if(parserText.contains("-get")){
-                    //Socket sendToClient = serverSocket.accept();
-                    //es.execute(new OutputService(sendToClient));//отсутствие гибкости программы, вследствии последовательного выполнения получения-отправки сообщения в очередь
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Something went wrong");
             }
-        //es.shutdown();
     }
     public void sendMessageToClient() throws FileNotFoundException, IOException { //должно делаться на сервере
         System.out.println("Конечный клиент подключился");
@@ -105,34 +80,3 @@ public class Databus {
         return result;
     }
 }
-
-
-
-
-
-
-
-
-/* try { //утащить в другой класс
-                                    DataInputStream inputStream = new DataInputStream(socketForSending.getInputStream());
-                                    System.out.println("DataInputStream is created");
-                                    while (!socketForSending.isClosed()) {
-                                        //reading block
-                                        System.out.println("Start reading");
-                                        String[] message = inputStream.readUTF().split("-send ");
-                                        FileReader fileForCheck = new FileReader("Titles.txt");
-                                        BufferedReader bufferedReader = new BufferedReader(fileForCheck);
-                                        if (!(bufferedReader.readLine() == null)) {
-                                            System.out.println(message);
-                                            File file = new File("Titles.txt");
-                                            FileWriter fileWriter = new FileWriter(file, true);
-                                            fileWriter.write(message + "\n");
-                                            fileWriter.close();
-                                        }
-                                        inputStream.close();
-                                        //clientDialogue.close();
-                                    }
-                                } catch (IOException io) {
-                                    io.printStackTrace();
-                                    System.out.println(io.getMessage());
-                                } */
