@@ -25,7 +25,7 @@ public class Databus {
                     if (readCommandFromServer.contains("-send ")) {
                         System.out.println("Поток создан");
 
-                       String path_string = "C:\\Users\\PLatchenkov\\IdeaProjects\\Databus_Client\\Titles.txt";
+                       String path_string = new File("").getAbsolutePath();
                         Path path = Paths.get(path_string);
                         if (!Files.exists(path)) {
                             File f = new File(path_string);
