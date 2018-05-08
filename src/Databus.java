@@ -23,19 +23,20 @@ public class Databus {
                     String readCommandFromServer  = getterCommand.readUTF();
                     getFromClient.close();
                     if (readCommandFromServer.contains("-send ")) {
-                        System.out.println("Поток создан");
 
-                       String path_string = new File("").getAbsolutePath();
+                        System.out.println("Поток создан");
+                        String command_regex = readCommandFromServer.replaceFirst("-send ", "");
+                        String path_string = new File("").getAbsolutePath();
                         Path path = Paths.get(path_string);
                         if (!Files.exists(path)) {
                             File f = new File(path_string);
                             f.createNewFile();
                         }
 
-                        System.out.println(readCommandFromServer);
+                        System.out.println(command_regex);
                         File file = new File("Titles.txt");
                         FileWriter fileWriter = new FileWriter(file, true);
-                        fileWriter.write(readCommandFromServer + "\n");
+                        fileWriter.write(command_regex + "\n");
                         fileWriter.close();
 
                     } else if (readCommandFromServer.contains("-get")){
