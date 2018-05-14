@@ -33,11 +33,28 @@ public class Databus {
                             f.createNewFile();
                         }
 
-                        System.out.println(command_regex);
-                        File file = new File("Titles.txt");
-                        FileWriter fileWriter = new FileWriter(file, true);
-                        fileWriter.write(command_regex + "\n");
-                        fileWriter.close();
+
+
+                        //далее идет попытка распарсить строку по признаку наличия нескольких сообщений в одной строке
+                        if(command_regex.contains("\"")){
+                            String s = command_regex.replaceAll("\"", "");
+                            String messages[] = s.split(", ");
+                            for (String token:messages) {
+                                System.out.println(token);
+                                File file = new File("Titles.txt");
+                                FileWriter fileWriter = new FileWriter(file, true);
+                                fileWriter.write(token + "\n");
+                                fileWriter.close();
+                            }
+
+
+                        } else {
+                            System.out.println(command_regex);
+                            File file = new File("Titles.txt");
+                            FileWriter fileWriter = new FileWriter(file, true);
+                            fileWriter.write(command_regex + "\n");
+                            fileWriter.close();
+                        }
 
                     } else if (readCommandFromServer.contains("-get")){
                         //send message to client and remove last read string
